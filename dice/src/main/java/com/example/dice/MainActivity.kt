@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageViews: Array<ImageView>
     private val viewModel: DiceViewModel by viewModels()
 
-    private val drawables = arrayOf(  // drawable for the dice
+    private val drawables = arrayOf(
         R.drawable.die_1, R.drawable.die_2,
         R.drawable.die_3, R.drawable.die_4,
         R.drawable.die_5, R.drawable.die_6
@@ -21,11 +21,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Initialize view binding for view object references
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        imageViews = arrayOf(   // Views: dice
+        imageViews = arrayOf(
             binding.die1,
             binding.die2,
             binding.die3,
@@ -37,6 +36,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.rollDice()
         }
 
+        // Оновлення зображень кісток
         viewModel.diceValues.observe(this) { values ->
             values.forEachIndexed { index, value ->
                 if (index in imageViews.indices && value in 1..6) {
@@ -45,8 +45,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.isRolling.observe(this) { isRolling ->
-            binding.rollButton.isEnabled = !isRolling
+        // Оновлення тексту кнопки ("ROLL" / "RESTART")
+        viewModel.buttonText.observe(this) { text ->
+            binding.rollButton.text = text
         }
     }
 }
